@@ -1,0 +1,12 @@
+# ~/.tmuxinator/icis-dev.yml
+name: icis-dev
+root: ~/src/icisstaff
+windows:
+  - tests:
+      layout: main-horizontal
+      panes:
+        - cd ~/src/icisstaff;
+  - editor:
+      layout: main-horizontal
+      panes:
+        - cd ~/src/icisstaff;

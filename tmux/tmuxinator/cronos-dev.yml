@@ -1,0 +1,12 @@
+# ~/.tmuxinator/cronos-dev.yml
+name: cronos-dev
+root: ~/src/cronos
+windows:
+  - tests:
+      layout: main-horizontal
+      panes:
+        - cd ~/src/cronos;
+  - editor:
+      layout: main-horizontal
+      panes:
+        - cd ~/src/cronos;

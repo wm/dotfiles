@@ -1,0 +1,7 @@
+# ~/.tmuxinator/go.yml
+name: q
+root: ~/Development/q
+windows:
+  - development:
+      panes:
+        - cd ~/Development/q; vi index.html

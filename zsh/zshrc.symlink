@@ -1,0 +1,171 @@
+export TMPDIR=/tmp/
+
+# Use vi as the default editor
+export EDITOR=vi
+
+# But still use emacs-style zsh bindings
+bindkey -e
+
+###########
+# ALIASES #
+###########
+alias ack="ag"
+alias vi="vim -O"
+alias cp="cp -iv" # prompt b4 overwrite; print out what just happened
+alias rm="rm -iv" # prompt b4 overwrite; print out what just happened
+alias mv="mv -iv" # prompt b4 overwrite; print out what just happened
+alias ls="ls -FGh"
+alias du="du -cksh"
+alias df="df -h"
+alias sed="sed -E" # sed's modern regexps, i.e. "(one|two)", not "\(one\|two\)"
+alias top='sudo htop'
+alias htop='sudo htop'
+
+alias grep=egrep
+export GREP_OPTIONS="--color=auto" # removes color when piping
+export GREP_COLOR='1;31' # highlight matches in red
+
+alias less="less -R" # correctly interpret ASCII color escapes
+alias crontab="VIM_CRONTAB=true crontab"
+
+alias bake="bundle check || bundle ; be rake"
+alias brake=bake
+alias be="bundle exec"
+alias guard="be guard"
+alias cuc="be cucumber"
+
+alias pr="hub pull-request"
+
+############################
+# Project folder shortcuts #
+############################
+export PROJECTS=~/Development
+export IORA=~/Development/iora
+export IORA_BOXEN=~/src
+export GOPATH=$HOME/gocode
+export GOSRC=$GOPATH/src/github.com/wm
+export GOGIT_GH_TOKEN='3306d7913790c1dc308b1c3e8eded2ef4f5e0920'
+export GOGIT_OWNER='IoraHealth'
+export GO_APP_ENGINE=$HOME/go_appengine
+
+cdpath=($PROJECTS $IORA_BOXEN $IORA $GOSRC)
+
+cdp() { # Fuzy cd into a project
+  cd $(find $PROJECTS $IORA $IORA_BOXEN $GOSRC -type d -maxdepth 1 | selecta)
+}
+
+vis() { # Fuxy find local files and open in vim
+  vim $(find . \( ! -path '*/.*' \) -type f |selecta)
+}
+
+############
+#  COLORS  #
+############
+# allows e.g. $fg[blue] and $bg[green]
+autoload -Uz colors && colors
+zmodload -i zsh/complist # colorful listings
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+
+# Removes duplicate PATH entries but keeps the original order.
+trim_path() {
+  # http://chunchung.blogspot.com/2007/11/remove-duplicate-paths-from-path-in.html
+  export PATH=$(awk -F: '{for(i=1;i<=NF;i++){if(!($i in a)){a[$i];printf s$i;s=":"}}}'<<<$PATH)
+}
+
+export PATH
+trim_path
+
+#################
+#  ZSH options  #
+#################
+RUBYOPT=rubygems
+HISTFILE=~/.zsh_history
+HISTSIZE=10000
+SAVEHIST=1000
+setopt no_list_beep
+setopt no_beep
+setopt appendhistory
+setopt hist_ignore_all_dups
+
+setopt prompt_subst
+setopt autopushd
+
+unsetopt correctall
+
+#######
+# Git #
+#######
+function g {
+  if [[ $# > 0 ]]; then
+    git $@
+  else
+    git status -sb
+  fi
+}
+
+################
+#  COMPLETION  #
+################
+fpath=(~/.dotfiles/zsh/zsh-completion-scripts $fpath)
+autoload -U compinit && compinit
+# show completion menu when number of options is at least 2
+zstyle ':completion:*' menu select=2
+compdef g=git
+# teamocil
+compctl -g '~/.teamocil/*(:t:r)' teamocil
+
+##########
+# HITCH  #
+##########
+hitch() {
+  command hitch "$@"
+  [[ -s "$HOME/.hitch_export_authors" ]] && source "$HOME/.hitch_export_authors"
+}
+alias unhitch='hitch -u'
+
+##########################
+#       TMUXINATOR       #
+##########################
+[[ -s $HOME/.tmuxinator/scripts/tmuxinator ]] && source $HOME/.tmuxinator/scripts/tmuxinator
+
+
+# Allow for personal additions; for instance, aliases to programs only
+# installed by you.
+if [[ -s "$HOME/.zshrc_personal" ]]; then
+  source "$HOME/.zshrc_personal"
+fi
+
+# Houston, we have liftoff.
+# [[ -n "$BOXEN_HOME" ]] && [[ -d $BOXEN_HOME/homebrew/lib/python2.7/site-packages/powerline ]] && source $BOXEN_HOME/homebrew/lib/python2.7/site-packages/powerline/bindings/zsh/powerline.zsh
+
+function powerline_precmd() {
+  export PS1="$(powerline-shell-go zsh $? 2> /dev/null)"
+}
+
+function install_powerline_precmd() {
+  for s in "${precmd_functions[@]}"; do
+    if [ "$s" = "powerline_precmd" ]; then
+      return
+    fi
+  done
+  precmd_functions+=(powerline_precmd)
+}
+
+install_powerline_precmd
+
+### Added by the Heroku Toolbelt
+export PATH="/usr/local/heroku/bin:$PATH"
+
+export PATH="$HOME/bin:$HOME/src/toolchest/bin:$PATH:$HOME/.dotfiles/bin:$GOPATH/bin:$GO_APP_ENGINE:$HOME/Library/Haskell/bin:$PATH"
+
+alias dc=docker-compose
+alias dm=docker-machine
+alias ducks='du -cks * |sort -rn |head -11'
+
+
+export CLICOLOR=1
+export LSCOLORS=exfxcxdxbxegedabagacad
+
+# Base16 Shell
+BASE16_SHELL="$HOME/.config/base16-shell/base16-default.dark.sh"
+[[ -s $BASE16_SHELL ]] && source $BASE16_SHELL

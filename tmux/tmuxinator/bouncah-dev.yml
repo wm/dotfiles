@@ -1,0 +1,12 @@
+# ~/.tmuxinator/bouncah-dev.yml
+name: bouncah-dev
+root: ~/src/bouncah
+windows:
+  - tests:
+      layout: main-horizontal
+      panes:
+        - cd ~/src/bouncah;
+  - editor:
+      layout: main-horizontal
+      panes:
+        - cd ~/src/bouncah;

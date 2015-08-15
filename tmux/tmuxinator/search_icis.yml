@@ -1,0 +1,10 @@
+# ~/.tmuxinator/search_icis.yml
+name: search_icis
+root: ~/gocode/src/github.com/wm/search_icis/
+windows:
+  - goconvey:
+      panes:
+        - goconvey
+  - development:
+      panes:
+        - vi search_icis/search_icis.go search_icis/search_icis_test.go

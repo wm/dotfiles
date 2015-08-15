@@ -1,0 +1,7 @@
+# ~/.tmuxinator/html_css.yml
+name: html_css
+root: ~/Development/intro_to_html
+windows:
+  - development:
+      panes:
+        - cd ~/Development/intro_to_html; vi index.html

@@ -1,0 +1,5 @@
+_tbm() {
+  compadd $(egrep -e '^  ([a-zA-z\-]*):[ ]*$' ${HOME}/.tbm|cut -d ' ' -f 3|cut -d ':' -f 1|tr '\n' ' '| sed -e 's/  *$//')
+}
+
+compdef _tbm tbm

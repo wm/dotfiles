@@ -1,0 +1,14 @@
+# ~/.tmuxinator/bouncah-server.yml
+name: bouncah-server
+root: ~/src/bouncah/
+windows:
+  - bouncah:
+      layout: main-horizontal
+      panes:
+        - tail -f log/development.log
+        - bundle check || bundle; foreman start
+        - RAILS_ENV=development TERM_CHILD=1 QUEUE=import_feed VERBOSE=1 foreman run bundle exec rake environment resque:work
+        - zeus start
+  - development:
+    panes:
+      - g

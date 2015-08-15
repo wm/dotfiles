@@ -1,0 +1,8 @@
+# ~/.tmuxinator/haskell.yml
+name: haskell
+root: ~/haskell
+windows:
+  - development:
+      panes:
+        - cd ~/haskell; vi
+        - ghci

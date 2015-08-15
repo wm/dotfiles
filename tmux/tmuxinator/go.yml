@@ -1,0 +1,7 @@
+# ~/.tmuxinator/go.yml
+name: go
+root: ~/gocode/src/github.com/wm/
+windows:
+  - development:
+      panes:
+        - cd ~/gocode/src/github.com/wm/

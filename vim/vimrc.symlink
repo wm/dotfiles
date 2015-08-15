@@ -1,0 +1,294 @@
+let mapleader = " "
+set nocompatible
+set encoding=utf8
+set fileformats=unix,dos,mac
+" set noswapfile
+" set nobackup
+" set nowritebackup
+
+set noerrorbells
+set novisualbell
+set t_vb=
+set tm=500
+set number " Show line numbers
+set ruler " Always show cursor position
+set laststatus=2 " Always show the status bar
+set backspace=2 " Consistent backspace behavior
+set tabstop=2 " Soft-tabs, two spaces
+set softtabstop=2
+set expandtab
+set autoindent " Indenting like you'd expect
+set shiftwidth=2
+set smartindent
+set incsearch " Show my searches as I type
+if version >= 703
+  set colorcolumn=80 " Show ruler at column 80
+endif
+syntax on " Highlight my syntax
+set list listchars=tab:»·,trail:· " Display extra whitespace
+set cursorline " highlight the current line
+set noshowmode " airline already shows the mode for me
+
+" Vundle --------------------
+filetype off
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+
+Plugin 'gmarik/Vundle.vim'
+Plugin 'vim-scripts/genutils'
+Plugin 'tpope/vim-endwise'
+Plugin 'scrooloose/nerdtree'
+Plugin 'vim-scripts/greplace.vim'
+Plugin 'tpope/vim-rails'
+" RSpec syntax highlighting
+Plugin 'Keithbsmiley/rspec.vim'
+Plugin 'tpope/vim-fugitive'
+Plugin 'tpope/vim-surround'
+Plugin 'vim-scripts/SelectBuf'
+Plugin 'kien/ctrlp.vim'
+Plugin 'chriskempson/base16-vim'
+Plugin 'bling/vim-airline'
+Plugin 'tomtom/tcomment_vim'
+Plugin 'puppetlabs/puppet-syntax-vim'
+Plugin 'plasticboy/vim-markdown'
+Plugin 'stephpy/vim-yaml'
+Plugin 'jpalardy/vim-slime'
+Plugin 'rustygeldmacher/c99.vim'
+Plugin 'tpope/vim-ragtag'
+Plugin 'christoomey/vim-tmux-runner'
+Plugin 'christoomey/vim-tmux-navigator'
+Plugin 'gabebw/vim-spec-runner'
+Plugin 'JulesWang/css.vim'
+Plugin 'cakebaker/scss-syntax.vim'
+Plugin 'gavinbeatty/vmath.vim'
+Plugin 'noahfrederick/vim-hemisu'
+
+call vundle#end()
+filetype plugin indent on
+" End Vundle ----------------
+
+
+set t_Co=256 " Sweet colors
+let base16colorspace=256  " Access colors present in 256 colorspace
+set background=dark
+colorscheme base16-tomorrow
+" colorscheme hemisu
+" set background=dark " set to light for light solarized
+
+imap <C-a> <Home> " Make moving around in insert mode easy
+imap <C-e> <End>  " Make moving around in insert mode easy
+
+" Make sure to enable the RVM version and gemset
+let g:VtrInitialCommand = shellescape("cd . && set -o emacs")
+let g:VtrClearSequence = ""
+
+" vim-tmux-navigator
+let g:tmux_navigator_no_mappings = 1
+
+nnoremap <silent> <M-Left> :TmuxNavigateLeft<cr>
+nnoremap <silent> <M-Down> :TmuxNavigateDown<cr>
+nnoremap <silent> <M-Up> :TmuxNavigateUp<cr>
+nnoremap <silent> <M-Right> :TmuxNavigateRight<cr>
+
+" vim-spec-runner mappings
+map <Leader>t <Plug>RunCurrentSpecFile()
+map <Leader>s <Plug>RunFocusedSpec
+map <Leader>l <Plug>RunMostRecentSpec
+
+" Run Rspec in a tmux pane, if in a tmux session
+if &term =~ '^screen'
+  let g:spec_runner_dispatcher = "VtrSendCommand! {command}"
+endif
+
+" Search for the word under the cursor (Shift-K)
+nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
+
+" Search all files in current dir (Ctrl-Shift-K)
+command -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
+nnoremap <C-S-K> :Ag<SPACE>
+
+" vim-math
+vnoremap <expr> + VMATH_YankAndAnalyse()
+
+autocmd FileType c,cpp,java,javascript,mkd,php,ruby,python,puppet,eruby,html autocmd BufWritePre <buffer> :call <SID>StripTrailingWhitespaces()
+
+" NERDTree toggle w/ command-D (D for directory)
+map <Leader>d :NERDTreeToggle<CR>
+let NERDTreeShowHidden=1
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
+
+" Open NERDTree if we open an empty vim
+function! StartUp()
+  if 0 == argc()
+    NERDTree
+  end
+endfunction
+autocmd VimEnter * call StartUp()
+
+nmap <unique> <silent> <Leader>b <Plug>SelectBuf " SelectBuf
+
+let g:ctrlp_root_markers = ['.ctrlp']
+let g:ctrlp_working_path_mode = 'rw'
+if executable('ag')
+  set grepprg=ag\ --follow\ --nogroup\ --nocolor\ --ignore\ tags
+  let g:ctrlp_user_command='ag %s -l --follow --nocolor -g ""'
+  let g:ctrlp_use_caching=0
+endif
+
+" Airline
+let g:airline_powerline_fonts = 1
+
+" MacVim
+set guifont=Monaco:h14
+
+" Git commit messages
+autocmd Filetype gitcommit set textwidth=72 fo=aw2tq
+
+" Use Javascript syntax for .json files
+au! BufRead,BufNewFile *.json set filetype=javascript
+
+" Show highlight group of the text under the cursor
+map ,hi :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<' . synIDattr(synID(line("."),col("."),0),"name") . "> lo<" . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">" . " FG:" . synIDattr(synIDtrans(synID(line("."),col("."),1)),"fg#")<CR>
+
+au FileType c setl ts=4 sw=4 sts=4 et
+
+" vim--slime should use tmux
+let g:slime_target = "tmux"
+
+:nnoremap <CR> :nohlsearch<cr> " clear the search buffer when hitting return
+set mat=5          " Bracket blinking
+set winwidth=85    " extend width on buffer change. 80 + 5 for numbers
+set winheight=15   " extend height on buffer change.
+set expandtab softtabstop=2 shiftwidth=2 " Indentation (spaces/tabs) (See go.vim section too - it uses tabs)
+
+inoremap jj <Esc> " use jj to esc from insert mode
+nnoremap <Leader>w :%s/\s\+$//e<CR> " Remove trailing whitespace
+
+" Comment and uncomment
+map<C-_><C-_> :Commentary<cr>
+
+" Split the current files
+map <Leader>s :split %<cr>
+map <Leader>v :vsplit %<cr>
+map <Leader>e :edit %%
+
+" Rotate the windows when in position x |x|_|
+"                                       | | |
+nmap <S-R> <C-w>K<C-W>r<C-W>k<C-W>H
+
+" toggle spell check
+:map <F5> :setlocal spell! spelllang=en_us<CR>
+
+" Alternate file
+nnoremap <leader>a :A<CR>
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Rename/move file
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+function! RenameFile()
+    let old_name = expand('%')
+    let new_name = input('New file name: ', expand('%'), 'file')
+    if new_name != '' && new_name != old_name
+        exec ':saveas ' . new_name
+        exec ':silent !rm ' . old_name
+        redraw!
+    endif
+endfunction
+map <leader>r :call RenameFile()<cr>
+
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+let g:zeus_prefix      = ""
+let g:bundle_prefix    = ""
+let g:fdoc_prefix      = ""
+
+" Toggle the rspec_command
+function! ToggleRspecCommand(prefix_name, prefix)
+  if g:{a:prefix_name}_prefix != ""
+    let g:{a:prefix_name}_prefix = ""
+  else
+    let g:{a:prefix_name}_prefix = a:prefix . " "
+  endif
+
+  let g:rspec_command = "!" . g:fdoc_prefix . g:zeus_prefix . g:bundle_prefix . "rspec {spec}"
+  echo "rspec_command = " . g:rspec_command
+endfunction
+
+map <Leader>z :call ToggleRspecCommand("zeus", "zeus")<cr>
+map <Leader>b :call ToggleRspecCommand("bundle", "bundle exec")<cr>
+map <Leader>f :call ToggleRspecCommand("fdoc", "FDOC_SCAFFOLD=true")<cr>
+
+" Copy/paste to/from clipboard
+map <leader>y "*y
+map <leader>p "*p
+
+" Quickly dislay output that is hidden behind vim
+map <leader>1 :!<cr>
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" GOLANG
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" Open godoc for word under cursor
+au FileType go nmap <Leader>gd <Plug>(go-doc)
+au FileType go nmap <Leader>gv <Plug>(go-doc-vertical)
+
+" " run go file
+" autocmd FileType go map <leader>g :wa \|:!clear && go run %<cr>
+" autocmd FileType go map <leader>t :wa \|:!clear && go test ./...<cr>
+
+" Run cmds
+au FileType go nmap <leader>r <Plug>(go-run)
+au FileType go nmap <leader>b <Plug>(go-build)
+au FileType go nmap <leader>t <Plug>(go-test)
+
+" Go to declaration
+au FileType go nmap gd <Plug>(go-def)
+au FileType go nmap <Leader>ds <Plug>(go-def-split)
+au FileType go nmap <Leader>dv <Plug>(go-def-vertical)
+
+function! GolangGetAlternateFilename(filepath)
+  let fileToOpen = ""
+
+  if empty(matchstr(a:filepath, "_test"))
+    let currentFileRoot = split(a:filepath, ".go$")[0]
+    let fileToOpen = currentFileRoot . "_test.go"
+  else
+    let currentFileRoot = split(a:filepath, "_test.go$")[0]
+    let fileToOpen = currentFileRoot . ".go"
+  endif
+
+  return fileToOpen
+endfunction
+
+function! GolangEditCommand(baseCommand)
+    if a:baseCommand == "A"
+      return "e"
+    elseif a:baseCommand == "AS"
+      return "sp"
+    elseif a:baseCommand == "AV"
+      return "vs"
+    endif
+endfunction
+
+function! GolangAlternateFile(baseCommand)
+  let currentFilePath = expand(bufname("%"))
+  let fileToOpen = GolangGetAlternateFilename(currentFilePath)
+
+  if filereadable(fileToOpen)
+    exec(":" . GolangEditCommand(a:baseCommand). " " . fileToOpen)
+  else
+    echo "couldn't find file " . fileToOpen
+  endif
+endfunction
+
+" Alternative files
+autocmd FileType go command! A :call GolangAlternateFile("A")
+autocmd FileType go command! AV :call GolangAlternateFile("AV")
+autocmd FileType go command! AS :call GolangAlternateFile("AS")
+
+set iskeyword+=".,a-zA-Z@-@,\\,\(,\)" " '.' is an end of word designator
+
+set undofile
+set undodir=$HOME/.vimundo " where to save undo histories

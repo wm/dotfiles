@@ -1,0 +1,8 @@
+# ~/.tmuxinator/ir_ptz.yml
+name: ir_ptz
+root: ~/Development/ir_ptz/
+windows:
+  - development:
+      panes:
+        - cd ~/Development/ir_ptz; vi
+

@@ -1,0 +1,7 @@
+# ~/.tmuxinator/go.yml
+name: ptz
+root: ~/
+windows:
+  - pan_tilt_zoom:
+      panes:
+        - ir_ptz
