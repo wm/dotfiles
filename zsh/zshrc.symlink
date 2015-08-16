@@ -135,9 +135,6 @@ if [[ -s "$HOME/.zshrc_personal" ]]; then
   source "$HOME/.zshrc_personal"
 fi
 
-# Houston, we have liftoff.
-# [[ -n "$BOXEN_HOME" ]] && [[ -d $BOXEN_HOME/homebrew/lib/python2.7/site-packages/powerline ]] && source $BOXEN_HOME/homebrew/lib/python2.7/site-packages/powerline/bindings/zsh/powerline.zsh
-
 function powerline_precmd() {
   export PS1="$(powerline-shell-go zsh $? 2> /dev/null)"
 }
