@@ -1,0 +1,86 @@
+# ~/.tmuxinator/harken-staging.yml
+name: harken-staging
+root: ~/
+windows:
+  - logs:
+      layout: tiled
+      panes:
+        - api_gateway:
+          # - printf '\033]2;%s\033\\' 'bouncah'
+          - ssh deployer@harken-staging.icisapp.com
+          - export PS1="api_gateway|${PS1}"
+          - cd apps/api_gateway/current
+          - tail -f log/staging.log
+        - snowflake:
+          - ssh deployer@harken-staging.icisapp.com
+          - export PS1="snowflake|${PS1}"
+          - cd apps/snowflake/staging/current
+          - tail -f log/staging.log
+        - staff:
+          - ssh deployer@harken-staging.icisapp.com
+          - export PS1="staff|${PS1}"
+          - cd apps/icis/staging/current
+          - tail -f log/staging.log
+        - patients:
+          - ssh deployer@harken-staging.icisapp.com
+          - export PS1="patients|${PS1}"
+          - cd apps/patients/staging/current
+          - tail -f log/staging.log
+        - postmaster:
+          - ssh deployer@harken-staging.icisapp.com
+          - export PS1="postmaster|${PS1}"
+          - cd apps/postmaster/staging/current
+          - tail -f log/staging.log
+        - bouncah:
+          - ssh deployer@harken-staging.icisapp.com
+          - export PS1="bouncah|${PS1}"
+          - cd apps/bouncah/staging/current
+          - tail -f log/staging.log
+  - consoles:
+      layout: tiled
+      panes:
+        - api_gateway:
+          - ssh deployer@harken-staging.icisapp.com
+          - cd apps/api_gateway/current
+          - bundle exec rails c
+        - snowflake:
+          - ssh deployer@harken-staging.icisapp.com
+          - cd apps/snowflake/staging/current
+          - bundle exec rails c
+        - staff:
+          - ssh deployer@harken-staging.icisapp.com
+          - cd apps/icis/staging/current
+          - bundle exec rails c
+        - patients:
+          - ssh deployer@harken-staging.icisapp.com
+          - cd apps/patients/staging/current
+          - bundle exec rails c
+        - postmaster:
+          - ssh deployer@harken-staging.icisapp.com
+          - cd apps/postmaster/staging/current
+          - bundle exec rails c
+        - bouncah:
+          - ssh deployer@harken-staging.icisapp.com
+          - cd apps/bouncah/staging/current
+          - bundle exec rails c
+  - apps:
+      layout: tiled
+      panes:
+        - api_gateway:
+          - ssh deployer@harken-staging.icisapp.com
+          - cd apps/api_gateway/current
+        - snowflake:
+          - ssh deployer@harken-staging.icisapp.com
+          - cd apps/snowflake/staging/current
+        - staff:
+          - ssh deployer@harken-staging.icisapp.com
+          - cd apps/icis/staging/current
+        - patients:
+          - ssh deployer@harken-staging.icisapp.com
+          - cd apps/patients/staging/current
+        - postmaster:
+          - ssh deployer@harken-staging.icisapp.com
+          - cd apps/postmaster/staging/current
+        - bouncah:
+          - ssh deployer@harken-staging.icisapp.com
+          - cd apps/bouncah/staging/current

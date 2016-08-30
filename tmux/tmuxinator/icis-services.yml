@@ -15,20 +15,20 @@ windows:
   - cronos:
       layout: main-horizontal
       panes:
-        - cd ~/src/cronos; bundle check || bundle; read -p 'Press any key to continue' ; foreman start
+        - cd ~/src/cronos; bundle check || bundle; foreman start
         - cd ~/src/cronos; tail -f ~/src/cronos/log/development.log
   - bouncah:
       layout: 5c71,318x78,0,0{80x78,0,0[80x39,0,0,2,80x38,0,40,8],237x78,81,0,7}
       panes:
-        - cd ~/src/bouncah; bundle check || bundle; read -p 'Press any key to continue' ; foreman start
+        - cd ~/src/bouncah; bundle check || bundle; foreman start
         - cd ~/src/bouncah; tail -f ~/src/bouncah/log/development.log
   - icispatients:
       layout: main-horizontal
       panes:
-        - cd ~/src/icispatients; bundle check || bundle; read -p 'Press any key to continue' ; foreman start
+        - cd ~/src/icispatients; bundle check || bundle; foreman start
         - cd ~/src/icispatients; tail -f ~/src/icispatients/log/development.log
-  - fredette:
+  - api_gateway:
       layout: main-horizontal
       panes:
-        - cd ~/src/fredette; bundle check || bundle; read -p 'Press any key to continue' ; PORT=5003 foreman start
-        - cd ~/src/fredette; tail -f ~/src/fredette/log/development.log
+        - cd ~/src/api; bundle check || bundle; ; foreman start
+        - cd ~/src/api; tail -f ~/src/api/log/development.log

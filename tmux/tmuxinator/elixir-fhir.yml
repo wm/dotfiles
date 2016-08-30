@@ -1,0 +1,12 @@
+# ~/.tmuxinator/elixir-fhir.yml
+name: elixir-fhir
+root: ~/src/elixir-fhir
+windows:
+  - tests:
+      layout: main-horizontal
+      panes:
+        - cd ~/src/elixir-fhir;
+  - editor:
+      layout: main-horizontal
+      panes:
+        - cd ~/src/elixir-fhir;
