@@ -1,4 +1,5 @@
 export TMPDIR=/tmp/
+setopt interactivecomments
 
 # Use vi as the default editor
 export EDITOR=vi
@@ -35,6 +36,14 @@ alias guard="be guard"
 alias cuc="be cucumber"
 
 alias pr="hub pull-request"
+function wttr() {
+    if [ "$1" != "" ]
+    then
+        curl wttr.in/$1
+    else
+        curl wttr.in/boston
+    fi
+}
 
 ############################
 # Project folder shortcuts #
@@ -97,9 +106,9 @@ unsetopt correctall
 #######
 function g {
   if [[ $# > 0 ]]; then
-    git $@
+    hub $@
   else
-    git status -sb
+    hub status -sb
   fi
 }
 
@@ -166,3 +175,8 @@ export LSCOLORS=exfxcxdxbxegedabagacad
 # Base16 Shell
 BASE16_SHELL="$HOME/.config/base16-shell/base16-default.dark.sh"
 [[ -s $BASE16_SHELL ]] && source $BASE16_SHELL
+export PATH=$PATH:/Users/wm/src/toolchest/bin
+
+
+# Postgres
+export PGDATA=/opt/boxen/data/postgresql-9.4

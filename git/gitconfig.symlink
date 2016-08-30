@@ -7,6 +7,8 @@
   ; da = diff HEAD     ; diff staged and unstaged
   ; p = pull --rebase --prune
   ; um = branch -a --no-merge
+  tidy = !git branch -d $(git branch --merged master)
+  tidy2 = !git branch -d $(git branch -vv | grep ': gone]' | gawk '{print $1}')
   aa = !git add -A && git status -sb
   amend = commit --amend --no-edit
   c = commit -m
@@ -25,6 +27,7 @@
   prl = !git log -1 --pretty=%B | hub pull-request -F - | xargs glowdock message --flow='iora:technical-discussions' --prepend="#pull "
   rmb = !sh -c 'git branch -D $1 && git push origin :$1' -
   t = tag --sort "version:refname"
+  log-diff = !git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative master..HEAD|grep -v 'Merge branch '
 [color]
   ui = auto
 [color "branch"]

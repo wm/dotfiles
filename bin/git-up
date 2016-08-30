@@ -11,14 +11,15 @@
 # Stolen from Ryan Tomayko
 # http://github.com/rtomayko/dotfiles/blob/rtomayko/bin/git-up
 
-set -e
-
-git fetch origin && git rebase origin/master
-
-# show diffstat of all changes
-echo "Diff:"
-git --no-pager diff --color --stat origin/master.. | sed 's/^/ /'
-
-# show an abbreviated commit log of stuff that was just merged.
-echo "Log:"
-git log --color --pretty=oneline --abbrev-commit origin/master.. | sed 's/^/  /'
+# set -e
+#
+# git fetch origin && git rebase origin/master
+#
+# # show diffstat of all changes
+# echo "Diff:"
+# git --no-pager diff --color --stat origin/master.. | sed 's/^/ /'
+#
+# # show an abbreviated commit log of stuff that was just merged.
+# echo "Log:"
+# git log --color --pretty=oneline --abbrev-commit origin/master.. | sed 's/^/  /'
+echo 'Please use: git pull --rebase instead'

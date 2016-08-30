@@ -29,4 +29,7 @@ vim/bundle/vundle/.netrwhist
 **/bcbs_dhc_active_patients.sh
 **/*_batch.sh
 script/test.sh
-script/test*.sh
+script/test*
+**/script/test*
+.node-version
+**/.gitignore_folder
