@@ -1,4 +1,6 @@
 let mapleader = " "
+let maplocalleader = " "
+
 set nocompatible
 set encoding=utf8
 set fileformats=unix,dos,mac
@@ -65,6 +67,11 @@ Plugin 'kchmck/vim-coffee-script'
 Plugin 'elixir-lang/vim-elixir'
 Plugin 'tpope/vim-endwise'
 Plugin 'ervandew/supertab'
+Plugin 'dsawardekar/portkey'
+Plugin 'dsawardekar/ember.vim'
+Plugin 'krisajenkins/vim-pipe'
+Plugin 'krisajenkins/vim-postgresql-syntax'
+
 
 call vundle#end()
 filetype plugin indent on
@@ -213,7 +220,7 @@ function! RenameFile()
         redraw!
     endif
 endfunction
-map <leader>r :call RenameFile()<cr>
+map <leader>R :call RenameFile()<cr>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " JSON Schema
@@ -323,24 +330,11 @@ au BufRead *.ex setlocal filetype=elixir
 au BufRead *.exs setlocal filetype=elixir
 
 au FileType elixir nmap <leader><leader> :w \|:!clear && elixir %<cr>
+au FileType elixir nmap <leader>t :w \|:!clear && mix test %<cr>
 "nmap <leader><leader> :w \|:!clear && ./script/test %<cr>
 " au FileType elixir nmap <leader>r <Plug>(elixir-run)
 " au FileType elixir nmap <leader>b <Plug>(elixir-build)
 " au FileType elixir nmap <leader>t <Plug>(elixir-test)
 
-
-let g:lightline = {
-      \ 'active': {
-      \   'left': [ [ 'mode', 'paste' ],
-      \             [ 'fugitive', 'readonly', 'filename', 'modified' ] ]
-      \ },
-      \ 'component': {
-      \   'modified': '%{&filetype=="help"?"":&modified?"+":&modifiable?"":"-"}',
-      \   'fugitive': '%{exists("*fugitive#head")?fugitive#head():""}'
-      \ },
-      \ 'component_visible_condition': {
-      \   'readonly': '(&filetype!="help"&& &readonly)',
-      \   'modified': '(&filetype!="help"&&(&modified||!&modifiable))',
-      \   'fugitive': '(exists("*fugitive#head") && ""!=fugitive#head())'
-      \ },
-    \ }
+autocmd FileType sql let b:vimpipe_command="psql icisstaff_development wm"
+autocmd FileType sql let b:vimpipe_filetype="postgresql"

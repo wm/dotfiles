@@ -1,0 +1,151 @@
+let mapleader = " "
+let maplocalleader = " "
+
+set nocompatible
+set encoding=utf8
+set fileformats=unix,dos,mac
+
+set t_vb=
+set tm=500
+set backspace=2 " Consistent backspace behavior
+set autoindent " Indenting like you'd expect
+set shiftwidth=2
+set smartindent
+set incsearch " Show my searches as I type
+set cursorline " highlight the current line
+set noshowmode
+set tabstop=2 " Soft-tabs, two spaces
+set softtabstop=2
+set expandtab
+
+" Vundle --------------------
+" filetype off
+" set rtp+=~/.vim/bundle/Vundle.vim
+" call vundle#begin()
+
+" ADD THESE TO .vimrc :(
+"
+" Plugin 'Keithbsmiley/rspec.vim'
+" Plugin 'stephpy/vim-yaml'
+" Plugin 'gabebw/vim-spec-runner'
+" Plugin 'JulesWang/css.vim'
+" Plugin 'dsawardekar/ember.vim'
+
+" call vundle#end()
+" filetype plugin indent on
+" End Vundle ----------------
+
+" Copy/paste to/from clipboard
+map <leader>y "*y
+map <leader>p "*p
+
+" Quickly dislay output that is hidden behind vim
+map <leader>1 :!<cr>
+
+" " for 'christoomey/vim-tmux-navigator'
+" nnoremap <silent> <M-Left> :TmuxNavigateLeft<cr>
+" nnoremap <silent> <M-Down> :TmuxNavigateDown<cr>
+" nnoremap <silent> <M-Up> :TmuxNavigateUp<cr>
+" nnoremap <silent> <M-Right> :TmuxNavigateRight<cr>
+
+" vim-spec-runner mappings
+map <Leader>t <Plug>RunCurrentSpecFile()
+map <Leader>s <Plug>RunFocusedSpec
+map <Leader>l <Plug>RunMostRecentSpec
+
+" Search for the word under the cursor (Shift-K)
+nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
+
+" Search all files in current dir (Ctrl-Shift-K)
+" command -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
+nnoremap \ :Ag<SPACE>
+
+" NERDTree toggle w/ command-D (D for directory)
+map <Leader>d :NERDTreeToggle<CR>
+let NERDTreeShowHidden=1
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
+
+let g:ctrlp_root_markers = ['.ctrlp']
+let g:ctrlp_working_path_mode = 'rw'
+if executable('ag')
+  set grepprg=ag\ --follow\ --nogroup\ --nocolor\ --ignore\ tags
+  " let g:ctrlp_user_command='ag %s -l --follow --nocolor -g ""'
+  let g:ctrlp_use_caching=0
+  let g:ag_working_path_mode="r"
+endif
+
+" Git commit messages
+autocmd Filetype gitcommit set textwidth=72 fo=aw2tq
+
+" Use Javascript syntax for .json files
+au! BufRead,BufNewFile *.json set filetype=javascript
+
+" Show highlight group of the text under the cursor
+map ,hi :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<' . synIDattr(synID(line("."),col("."),0),"name") . "> lo<" . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">" . " FG:" . synIDattr(synIDtrans(synID(line("."),col("."),1)),"fg#")<CR>
+
+set hlsearch
+:nnoremap <CR> :nohlsearch<cr> " clear the search buffer when hitting return
+
+" set mat=5          " Bracket blinking
+" set winwidth=85    " extend width on buffer change. 80 + 5 for numbers
+" set winheight=15   " extend height on buffer change.
+"
+inoremap jj <Esc> " use jj to esc from insert mode
+nnoremap <Leader>w :%s/\s\+$//e<CR> " Remove trailing whitespace
+
+" Comment and uncomment
+map<C-_><C-_> :Commentary<cr>
+
+" Split the current files
+map <Leader>s :split %<cr>
+map <Leader>v :vsplit %<cr>
+map <Leader>e :edit %
+
+" Rotate the windows when in position x |x|_|
+"                                       | | |
+nmap <S-R> <C-w>K<C-W>r<C-W>k<C-W>H
+
+" toggle spell check
+:map <F5> :setlocal spell! spelllang=en_us<CR>
+
+" Alternate file
+nnoremap <leader>a :A<CR>
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Rename/move file
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+function! RenameFile()
+    let old_name = expand('%')
+    let new_name = input('New file name: ', expand('%'), 'file')
+    if new_name != '' && new_name != old_name
+        exec ':saveas ' . new_name
+        exec ':silent !rm ' . old_name
+        redraw!
+    endif
+endfunction
+map <leader>R :call RenameFile()<cr>
+
+set iskeyword+=".,a-zA-Z@-@,\\,\(,\)" " '.' is an end of word designator
+set undofile
+set undodir=$HOME/.vimundo " where to save undo histories
+
+" Window navigation
+"nmap <C-J> <C-W><C-J>
+"nmap <C-K> <C-W><C-K>
+"nmap <C-L> <C-W><C-L>
+"nmap <C-H> <C-W><C-H>
+
+set nowrap
+set nofoldenable    " disable folding
+
+" Run Elixir cmds
+au BufNewFile *.exs setfiletype elixir
+au BufNewFile *.ex setfiletype elixir
+au BufRead *.ex setlocal filetype=elixir
+au BufRead *.exs setlocal filetype=elixir
+
+au FileType elixir nmap <leader><leader> :w \|:!clear && elixir %<cr>
+au FileType elixir nmap <leader>t :w \|:!clear && mix test %<cr>
+
+autocmd FileType sql let b:vimpipe_command="psql icisstaff_development wm"
+autocmd FileType sql let b:vimpipe_filetype="postgresql"

@@ -12,11 +12,16 @@ windows:
       panes:
         - cd ~/src/icisstaff; bundle check || bundle; VIBRAM_URI=http://fredette.dev foreman start
         - cd ~/src/icisstaff; tail -f ~/src/icisstaff/log/development.log
-  - cronos:
+  - postmaster:
       layout: main-horizontal
       panes:
-        - cd ~/src/cronos; bundle check || bundle; foreman start
-        - cd ~/src/cronos; tail -f ~/src/cronos/log/development.log
+        - cd ~/src/postmaster; bundle check || bundle; foreman start
+        - cd ~/src/postmaster; tail -f ~/src/postmaster/log/development.log
+  - delorean:
+      layout: main-horizontal
+      panes:
+        - cd ~/src/delorean; bundle check || bundle; foreman start
+        - cd ~/src/delorean; tail -f ~/src/delorean/log/development.log
   - bouncah:
       layout: 5c71,318x78,0,0{80x78,0,0[80x39,0,0,2,80x38,0,40,8],237x78,81,0,7}
       panes:

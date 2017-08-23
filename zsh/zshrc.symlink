@@ -1,3 +1,4 @@
+export IORA_USER=will.mernagh
 export TMPDIR=/tmp/
 setopt interactivecomments
 
@@ -45,6 +46,10 @@ function wttr() {
     fi
 }
 
+function ansible-vault-edit() {
+  ansible-vault edit --vault-password=~/.ansible_vault_pass $1
+}
+
 ############################
 # Project folder shortcuts #
 ############################
@@ -63,7 +68,7 @@ cdp() { # Fuzy cd into a project
   cd $(find $PROJECTS $IORA $IORA_BOXEN $GOSRC -type d -maxdepth 1 | selecta)
 }
 
-vis() { # Fuxy find local files and open in vim
+vis() { # Fuzy find local files and open in vim
   vim $(find . \( ! -path '*/.*' \) -type f |selecta)
 }
 
@@ -104,6 +109,7 @@ unsetopt correctall
 #######
 # Git #
 #######
+compdef g=git
 function g {
   if [[ $# > 0 ]]; then
     hub $@
@@ -121,7 +127,7 @@ autoload -U compinit && compinit
 zstyle ':completion:*' menu select=2
 compdef g=git
 # teamocil
-compctl -g '~/.teamocil/*(:t:r)' teamocil
+# compctl -g '~/.teamocil/*(:t:r)' teamocil
 
 ##########
 # HITCH  #
@@ -168,7 +174,6 @@ alias dc=docker-compose
 alias dm=docker-machine
 alias ducks='du -cks * |sort -rn |head -11'
 
-
 export CLICOLOR=1
 export LSCOLORS=exfxcxdxbxegedabagacad
 
@@ -180,3 +185,16 @@ export PATH=$PATH:/Users/wm/src/toolchest/bin
 
 # Postgres
 export PGDATA=/opt/boxen/data/postgresql-9.4
+
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+
+# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
+export PATH="$PATH:$HOME/.rvm/bin"
+
+export PATH="$HOME/.bin:$PATH"
+
+export GIT_EDITOR=vim
+
+source ~/.oh-my-zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+. `brew --prefix`/etc/profile.d/z.sh

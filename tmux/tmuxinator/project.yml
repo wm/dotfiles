@@ -1,0 +1,16 @@
+# ~/.tmuxinator/project.yml
+name: project
+root:  ~/src/<%= @args[0] %>
+windows:
+  - tests:
+      layout: main-horizontal
+      panes:
+        - mkdir -p ~/src/<%= @args[0] %>; cd ~/src/<%= @args[0] %>;
+  - console:
+      layout: main-horizontal
+      panes:
+        - mkdir -p ~/src/<%= @args[0] %>; cd ~/src/<%= @args[0] %>;
+  - editor:
+      layout: main-horizontal
+      panes:
+        - mkdir -p ~/src/<%= @args[0] %>; cd ~/src/<%= @args[0] %>;

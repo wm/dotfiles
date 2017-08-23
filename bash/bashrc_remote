@@ -1,0 +1,20 @@
+alias vi="vim -O"
+alias cp="cp -iv" # prompt b4 overwrite; print out what just happened
+alias rm="rm -iv" # prompt b4 overwrite; print out what just happened
+alias mv="mv -iv" # prompt b4 overwrite; print out what just happened
+alias ls="ls -FGh"
+
+alias grep=egrep
+export GREP_OPTIONS="--color=auto" # removes color when piping
+export GREP_COLOR='1;31' # highlight matches in red
+
+alias less="less -R" # correctly interpret ASCII color escapes
+alias crontab="VIM_CRONTAB=true crontab"
+
+alias bake="bundle check || bundle ; be rake"
+alias brake=bake
+alias be="bundle exec"
+
+source ~/.bash_profile
+source ~/.bashrc
+test -e "/tmp/.iterm2_shell_integration.bash.wm" && source "/tmp/.iterm2_shell_integration.bash.wm"
